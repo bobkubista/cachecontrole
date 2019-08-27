@@ -37,4 +37,19 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      echo "Build stage complete"
+    }
+    failure {
+      echo "Build failed"
+      mail body: 'build failed', subject: 'Build failed!',
+      to: 'bob@bobkubista.com'
+    }
+    success {
+      echo "Build succeeded"
+      mail body: 'build succeeded', subject: 'Build Succeeded',
+       to: 'bob@bobkubista.com'
+    }
+  }
 }
