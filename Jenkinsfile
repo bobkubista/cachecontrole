@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  tools {
+    maven 'maven'
+  }
   stages {
     stage('compile') {
       steps {
@@ -67,9 +70,6 @@ pipeline {
         sh 'mvn -T 1C -am -DdryRun=true -e -X release:perform'
       }
     }
-  }
-  tools {
-    maven 'maven'
   }
   post {
     always {
