@@ -22,10 +22,10 @@ pipeline {
     }
     stage('deploy') {
       steps {
-        sh 'mvn -T 1C -f services/rest-services/spring-services/user/user-service/pom.xml cargo:undeploy cargo:deploy -X '
-        sh 'mvn -T 1C -f services/rest-services/cdi-services/datagathering/datagathering-rest-service/pom.xml cargo:undeploy cargo:deploy -X '
         timeout(time: 10, unit: 'MINUTES') {
           input(message: 'Deploy', id: 'deply')
+          sh 'mvn -T 1C -f services/rest-services/spring-services/user/user-service/pom.xml cargo:undeploy cargo:deploy -X '
+          sh 'mvn -T 1C -f services/rest-services/cdi-services/datagathering/datagathering-rest-service/pom.xml cargo:undeploy cargo:deploy -X '
         }
 
       }
