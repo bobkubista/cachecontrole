@@ -36,6 +36,18 @@ pipeline {
         sh 'mvn deploy -T 1C -am'
       }
     }
+    post {
+      always {
+        echo "Build stage complete"
+      }
+      failure {
+        echo "Build failed"
+        mail body: 'build failed', subject: 'Build failed', to: 'bobbykubista@yahoo.com'
+      }
+      success {
+        echo "Build succesfull"
+      }
+    }
     stage('mail') {
       steps {
         mail(subject: 'build', body: 'build is done')
