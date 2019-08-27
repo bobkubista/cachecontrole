@@ -24,6 +24,10 @@ pipeline {
       steps {
         sh 'mvn -T 1C -f services/rest-services/spring-services/user/user-service/pom.xml cargo:undeploy cargo:deploy -X '
         sh 'mvn -T 1C -f services/rest-services/cdi-services/datagathering/datagathering-rest-service/pom.xml cargo:undeploy cargo:deploy -X '
+        timeout(time: 10, unit: 'MINUTES') {
+          input(message: 'Deploy', id: 'deply')
+        }
+
       }
     }
     stage('sonar') {
@@ -39,17 +43,21 @@ pipeline {
   }
   post {
     always {
-      echo "Build stage complete"
+      echo 'Build stage complete'
+
     }
+
     failure {
-      echo "Build failed"
-      mail body: 'build failed', subject: 'Build failed!',
-      to: 'bob@bobkubista.com'
+      echo 'Build failed'
+      mail(body: 'build failed', subject: 'Build failed!', to: 'bob@bobkubista.com')
+
     }
+
     success {
-      echo "Build succeeded"
-      mail body: 'build succeeded', subject: 'Build Succeeded',
-       to: 'bob@bobkubista.com'
+      echo 'Build succeeded'
+      mail(body: 'build succeeded', subject: 'Build Succeeded', to: 'bob@bobkubista.com')
+
     }
+
   }
 }
