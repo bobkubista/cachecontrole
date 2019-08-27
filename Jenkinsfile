@@ -7,6 +7,13 @@ pipeline {
         stash 'compile'
       }
     }
+    }
+    stage('validate') {
+      unstash 'compile'
+      steps {
+        sh 'mvn -B -T 1C validate -am'
+      }
+    }
     stage('test') {
       parallel {
         stage('test') {
@@ -38,6 +45,12 @@ pipeline {
         stash 'deploy'
       }
     }
+    stage('performance test') {
+      steps {
+        sh 'mvn verify -P performance-test -T 1C -am'
+        junit '**/*.jtl'
+      }
+    }
     stage('sonar') {
       steps {
         unstash 'deploy'
@@ -48,18 +61,6 @@ pipeline {
       steps {
         sh 'mvn deploy -T 1C -am'
       }
-    }
-    stage('performance test') {
-      steps {
-        sh 'mvn verify -P performance-test -T 1C -am'
-        junit '**/*.jtl'
-      }
-    }
-    stage('validate') {
-      steps {
-        sh 'mvn -B -T 1C validate -am'
-      }
-    }
     stage('release') {
       steps {
         sh 'mvn -T 1C -am -e -X release:prepare'
