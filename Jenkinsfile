@@ -48,10 +48,5 @@ pipeline {
         echo "Build succesfull"
       }
     }
-    stage('mail') {
-      steps {
-        mail(subject: 'build', body: 'build is done')
-      }
-    }
   }
 }
