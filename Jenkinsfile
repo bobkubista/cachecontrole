@@ -8,8 +8,8 @@ pipeline {
       }
     }
     stage('validate') {
-      unstash 'compile'
       steps {
+        unstash 'compile'
         sh 'mvn -B -T 1C validate -am'
       }
     }
