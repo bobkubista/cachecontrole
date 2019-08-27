@@ -7,7 +7,6 @@ pipeline {
         stash 'compile'
       }
     }
-    }
     stage('validate') {
       unstash 'compile'
       steps {
@@ -61,6 +60,7 @@ pipeline {
       steps {
         sh 'mvn deploy -T 1C -am'
       }
+    }
     stage('release') {
       steps {
         sh 'mvn -T 1C -am -e -X release:prepare'
